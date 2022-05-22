@@ -1,2 +1,3 @@
 # Code_Challenges
-Storing place for code challenges
+
+This projects hold demos, algorithms and any cool things I do while coding and practecing 
