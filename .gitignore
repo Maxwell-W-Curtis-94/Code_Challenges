@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# HERE
+Calculator
+
+
+
 # Distribution / packaging
 .Python
 .idea/
