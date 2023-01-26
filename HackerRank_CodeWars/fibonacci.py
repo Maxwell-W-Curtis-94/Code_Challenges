@@ -10,12 +10,10 @@ def fib(n):
 
 
 def fib_simple(n):
-    # bug in the second input
-    # displays a 0 instead of 1
     # not fast with large numbers
     return fib(n - 1) + fib(n - 2)
 
 
 if __name__ == '__main__':
-    for i in range(20):
+    for i in range(1, 20):
         print(fib_simple(i))
