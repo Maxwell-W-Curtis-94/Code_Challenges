@@ -1,3 +1,3 @@
-# Code_Challenges
+# Coding Collection
 
-This projects hold demos, algorithms and any cool things I do while coding and practecing 
+A simple repo to hold any coding challenges, tutorials and simple projects that I work on
