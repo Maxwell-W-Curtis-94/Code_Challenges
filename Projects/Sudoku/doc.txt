@@ -1,0 +1,3 @@
+builds sudoku game boards
+lets the user play the game board
+can play its self
