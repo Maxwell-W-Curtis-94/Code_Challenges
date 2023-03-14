@@ -1,75 +1,34 @@
-from pprint import pprint
+class FillFunctions:
 
-m = [[2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4],
-     [2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4],
-     [3, 3, 3, 1, 3, 3, 4, 1, 4, 4, 0, 4],
-     [3, 3, 1, 1, 1, 3, 1, 1, 1, 4, 4, 4],
-     [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4],
-     [3, 1, 1, 0, 0, 0, 0, 0, 1, 1, 4, 4],
-     [3, 1, 1, 0, 0, 0, 0, 0, 1, 1, 4, 4],
-     [2, 1, 1, 1, 1, 0, 0, 0, 1, 1, 2, 2],
-     [2, 1, 1, 1, 0, 0, 0, 0, 1, 2, 2, 2],
-     [2, 2, 1, 1, 1, 0, 0, 2, 2, 2, 1, 0],
-     [2, 2, 2, 1, 1, 0, 0, 2, 2, 2, 1, 1],
-     [2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 0]
-     ]
+    def __init__(self, matrix_columns, matrix_rows):
+        self.matrix = [[0] * matrix_columns] * matrix_rows  # this does not make a true 2d array the internal array is
+        # duplicated not a new instance/ list  is created
 
-
-def flood_recursive(matrix):
-    width = len(matrix)
-    height = len(matrix[0])
-
-    def fill(x, y, start_color, color_to_update):
-        # if the square is not the same color as the starting point
-        if matrix[x][y] != start_color:
+    def flood_fill(self, target_color, new_color, start_location):
+        col = len(self.matrix)
+        row = len(self.matrix[0])
+        if (start_location[0] < 0 or start_location[0] > col) or (start_location[1] < 0 or start_location[1] > row):
             return
-        # if the square is not the new color
-        elif matrix[x][y] == color_to_update:
-            return
-        else:
-            # update the color of the current square to the replacement color
-            matrix[x][y] = color_to_update
-            neighbors = [
-                (x - 1, y),
-                (x + 1, y),
-                (x - 1, y - 1),
-                (x + 1, y + 1),
-                (x - 1, y + 1),
-                (x + 1, y - 1),
-                (x, y - 1),
-                (x, y + 1)
-            ]
-            for n in neighbors:
-                if 0 <= n[0] <= width - 1 and 0 <= n[1] <= height - 1:
-                    fill(n[0], n[1], start_color, color_to_update)
+            # raise ValueError(
+            #     f"start_location:{start_location} is outside of the matrix: C:{col}, R:{row}")  # bad for recursion
 
-    start_x = 6
-    start_y = 6
-    start_color = matrix[start_x][start_y]
-    fill(start_x, start_y, start_color, 9)
-    return matrix
+        if self.matrix[start_location[0]][start_location[1]] == target_color:
+            self.matrix[start_location[0]][start_location[1]] = new_color
+
+            self.flood_fill(target_color, new_color, (start_location[0] + 1, start_location[1]))  # north
+            self.flood_fill(target_color, new_color, (start_location[0] - 1, start_location[1]))  # south
+            self.flood_fill(target_color, new_color, (start_location[0], start_location[1] + 1))  # east
+            self.flood_fill(target_color, new_color, (start_location[0], start_location[1] - 1))  # west
+
+        return self.matrix
+
+    def display_matrix(self):
+        for row in self.matrix:
+            print(*row, sep='\t')
 
 
-def simple_flood_fill(x, y, old, new):
-    # we need the x and y of the start position, the old value,
-    # and the new value
-    # the flood fill has 4 parts
-    # firstly, make sure the x and y are inbounds
-    if x < 0 or x >= len(m[0]) or y < 0 or y >= len(m):
-        return
-    # secondly, check if the current position equals the old value
-    if m[y][x] != old:
-        return
-
-    # thirdly, set the current position to the new value
-    m[y][x] = new
-    # fourthly, attempt to fill the neighboring positions
-    simple_flood_fill(x + 1, y, old, new)
-    simple_flood_fill(x - 1, y, old, new)
-    simple_flood_fill(x, y + 1, old, new)
-    simple_flood_fill(x, y - 1, old, new)
-
-
-pprint(flood_recursive(m))
-print("\r\n")
-pprint(m)
+if __name__ == '__main__':
+    cls = FillFunctions(10, 10)
+    cls.display_matrix()
+    cls.flood_fill(0, 1, (1, 1))
+    cls.display_matrix()
